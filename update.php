@@ -1,13 +1,11 @@
 <?php
 include "config.php";
-  session_start();
-   if(!isset($_SESSION['username'])){
-     header("Location: http://localhost/pdocrud_login/login.php");
-   } 
-   
+session_start();
+if(!isset($_SESSION['username'])){
+header("Location: http://localhost/pdocrud_login/login.php");
+}
 // include database connection file
- 
-if(isset($_POST['update']))  
+if(isset($_POST['update']))
 {
 // Get the userid
 $userid=$_GET['id'];
@@ -35,8 +33,6 @@ echo "<script>alert('Record Updated successfully');</script>";
 // Code for redirection
 echo "<script>window.location.href='index.php'</script>";
 }
-
-
 // Get the userid
 $userid=$_GET['id'];
 $sql = "SELECT * from student where id=:uid";
@@ -57,31 +53,31 @@ foreach($results as $result)
 {
 ?>
 <form name="insertrecord" method="post">
-<div class="row">
-<div class="col-md-4"><b>First Name</b>
-<input type="text" name="firstname" value="<?php echo ($result->first_name);?>" class="form-control" required>
-</div>
-<div class="col-md-4"><b>Last Name</b>
-<input type="text" name="lastname" value="<?php echo ($result->last_name);?>" class="form-control" required>
-</div>
-</div>
-<div class="row">
-<div class="col-md-4"><b>Email id</b>
-<input type="email" name="emailid" value="<?php echo ($result->email_id);?>" class="form-control" required>
-</div>
-<div class="col-md-4"><b>Contactno</b>
-<input type="text" name="contactno" value="<?php  echo ($result->contact_no);?>" class="form-control" maxlength="10" required>
-</div>
-</div>
-<div class="row">
-<div class="col-md-8"><b>Address</b>
-<textarea class="form-control" name="address" required><?php echo ($result->address_no);?></textarea>
-</div>
-</div>
-<?php }} ?>
-<div class="row" style="margin-top:1%">
-<div class="col-md-8">
-<input type="submit" name="update" value="Update">
-</div>
-</div>
+	<div class="row">
+		<div class="col-md-4"><b>First Name</b>
+			<input type="text" name="firstname" value="<?php echo ($result->first_name);?>" class="form-control" required>
+		</div>
+		<div class="col-md-4"><b>Last Name</b>
+			<input type="text" name="lastname" value="<?php echo ($result->last_name);?>" class="form-control" required>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4"><b>Email id</b>
+			<input type="email" name="emailid" value="<?php echo ($result->email_id);?>" class="form-control" required>
+		</div>
+		<div class="col-md-4"><b>Contactno</b>
+			<input type="text" name="contactno" value="<?php  echo ($result->contact_no);?>" class="form-control" maxlength="10" required>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8"><b>Address</b>
+			<textarea class="form-control" name="address" required><?php echo ($result->address_no);?></textarea>
+		</div>
+	</div>
+	<?php }} ?>
+	<div class="row" style="margin-top:1%">
+		<div class="col-md-8">
+			<input type="submit" name="update" value="Update">
+		</div>
+	</div>
 </form>

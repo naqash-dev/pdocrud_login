@@ -1,34 +1,43 @@
   <?php 
 include "config.php";
 session_start();
-$msg = ""; 
+  
+
+   if(isset($_SESSION['username'])){
+        echo "<h2>Already Login: ".$_SESSION['username']."</h2>";
+        echo '<br><a href="logout.php">Logout</a>';
+        header("Location: http://localhost/pdocrud_login/index.php");
+   } 
+
 
 	 if(isset($_POST['login']))
 	 {
 	 	    $email = $_POST['email'];
 	 	    $passverify = $_POST['password'];
-			$sql = "SELECT * FROM stulogin WHERE email = :email";
+			$sql = "SELECT * FROM stulogin WHERE email = :email and status = 'active'";
 			$query = $conn->prepare($sql);
 			$query->bindValue(':email',$email);
-			 
 			$query->execute();
-			$user = $query->fetch(PDO::FETCH_ASSOC);
+		    $user = $query->fetch(PDO::FETCH_ASSOC);
+          
 			if($user === false){
-              $msg = "Incorrect email";
+             $_SESSION['msg']= "Incorrect email";
 			}else
 			{
 				$validpass = password_verify($passverify, $user['password']);
+            
 				 if($validpass){
 				 	$_SESSION['user_id'] = $user['id'];
 				 	$_SESSION['username'] = $user['username'];
 				 	header("Location: http://localhost/pdocrud_login/index.php");
 				 }else{
-				 	$msg = "Incorrect email password";
+				 $_SESSION['msg']="Incorrect email password";
 				 }
 
 			}
 			
 	 }
+	 
 ?> 
 <!DOCTYPE html>
 <html>
@@ -45,7 +54,7 @@ $msg = "";
 <!-- //web font -->
 </head>
 <body>
-<?php echo "$msg"; ?>
+ 
 	<!-- main -->
 	<div class="main-w3layouts wrapper">
 		<h1>Login Form</h1>
@@ -65,7 +74,16 @@ $msg = "";
 					</div>
 					<input type="submit" name= "login" value="LOGIN">
 				</form>
-				<p>Don't have an Account? <a href="signup.php">Sign Up!</a></p>
+				<p>Forget Password? <a href="forget_email.php">Click Here!</a></p><br>
+				<p>Don't have an Account? <a href="signup.php">Sign Up!</a></p><br>
+<div style="font-size: 25px;margin-left: 15px">
+	<?php if(isset($_SESSION['msg'])){
+		echo $_SESSION['msg'];
+		}else{
+         echo $_SESSION['msg']="you are logout please login again.";
+		} 
+		?>
+</div>
 			</div>
 		</div>
 		 
@@ -83,5 +101,6 @@ $msg = "";
 		</ul>
 	</div>
 	<!-- //main -->
+
 </body>
 </html>
